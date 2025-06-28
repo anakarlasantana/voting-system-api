@@ -13,8 +13,7 @@ class VotingTests(APITestCase):
             cpf="12345678901", name="Test User", password="senha123"
         )
 
-        # Autenticar via JWT
-        login_url = reverse("login")  # Certifique-se que existe esta rota
+        login_url = reverse("login")
         response = self.client.post(
             login_url, {"cpf": "12345678901", "password": "senha123"}
         )

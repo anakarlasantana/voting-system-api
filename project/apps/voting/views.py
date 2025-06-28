@@ -24,7 +24,7 @@ from drf_spectacular.utils import (
     responses={200: TopicSerializer(many=True), 201: TopicSerializer},
 )
 class TopicView(generics.ListCreateAPIView):
-    queryset = Topic.objects.all()
+    queryset = Topic.objects.order_by("-created_at")
     serializer_class = TopicSerializer
 
     def get_permissions(self):
@@ -57,7 +57,6 @@ class CreateSessionView(APIView):
     def post(self, request, topic_id):
         topic = get_object_or_404(Topic, id=topic_id)
         now = timezone.now()
-        # sessions é o related_name para as sessões do tópico (plural)
         open_sessions = topic.sessions.filter(
             start_time__lte=now, end_time__gt=now
         )
@@ -144,7 +143,6 @@ class VotingResultView(APIView):
         topic = get_object_or_404(Topic, id=topic_id)
         now = timezone.now()
 
-        # Pega a última sessão da pauta (ordenada pelo fim da sessão)
         last_session = topic.sessions.order_by("-end_time").first()
 
         if not last_session:
@@ -153,7 +151,6 @@ class VotingResultView(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        # Se a sessão ainda estiver aberta, não retorna resultado
         if last_session.start_time <= now < last_session.end_time:
             return Response(
                 {"error": "Sessão ainda está aberta"},
@@ -166,6 +163,6 @@ class VotingResultView(APIView):
         nao = votes.filter(choice="Não").count()
 
         return Response(
-            {"total": total, "sim": sim, "nao": nao},
+            {"total": total, "title": topic.title, "sim": sim, "nao": nao},
             status=status.HTTP_200_OK,
         )
