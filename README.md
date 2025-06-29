@@ -68,6 +68,10 @@ Esta API implementa o backend para um sistema de votação online para pautas de
 
 ---
 
+### Swagger
+Foi usado o swagger para documentação, logo em caso de dúvidas sobre os endpoints é só acessar:
+`api/docs/swagger-ui/`
+
 ## Regras de Negócio
 
 - Usuário deve estar autenticado para criar pautas, abrir sessões e votar.
