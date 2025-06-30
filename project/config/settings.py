@@ -36,7 +36,13 @@ SIMPLE_JWT = {
 
 ALLOWED_HOSTS = []
 
-APPS = ["apps.authentication", "apps.voting", "drf_spectacular"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost",
+    "http://localhost:5173",  
+    "http://localhost:80",
+]
+
+APPS = ["apps.authentication", "apps.voting", "drf_spectacular", "corsheaders"]
 
 AUTH_USER_MODEL = "authentication.User"
 
@@ -61,6 +67,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware"
 ]
 
 ROOT_URLCONF = "config.urls"
